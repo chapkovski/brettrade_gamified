@@ -15,6 +15,7 @@ Vue.use(VueParticlesBg);
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
 const ws_path = ws_scheme + "://" + window.location.host + window.socket_path;
 console.debug("WASPATH", ws_path);
+
 // Vue.use(VueNativeSock, ws_path, {
 //   format: "json",
 //   reconnection: true, // (Boolean) whether to reconnect automatically (false)
@@ -23,11 +24,14 @@ console.debug("WASPATH", ws_path);
 // });
 
 import "vuetify/dist/vuetify.min.css";
+
+import store from './store'
 Stock(Highcharts);
 Vue.use(HighchartsVue);
 Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
-  render: (h) => h(App),
+  store,
+  render: (h) => h(App)
 }).$mount("#app");
