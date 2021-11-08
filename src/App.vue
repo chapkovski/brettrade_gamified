@@ -24,7 +24,7 @@
               ><div>{{ awardJustGiven.name }}</div></v-card-title
             >
             <v-card-text>
-              {{ awardJustGiven.desc}}
+              {{ awardJustGiven.desc }}
             </v-card-text>
           </v-card>
         </div>
@@ -139,31 +139,32 @@
         <v-card-text class="overflow-y-auto" style="margin-bottom:50px">
           <v-list>
             <v-list-item-group active-class="border" color="indigo" class=" ">
-               <transition-group
-      enter-active-class="animate__animated animate__fadeInRight animate__slow"
-      leave-active-class="animate__animated animate__fadeOutTopRight animate__slow"
-    >
-              <v-list-item
-                class="m-3  "
-                v-for="(item, i) in messages"
-                :key="i"
-                :id="`li_${i}`"
-                :ref="`li_${i}`"
-                dense
+              
+                <v-list-item
+                  class="m-3  "
+                  v-for="(item, i) in messages"
+                  :key="i"
+                  :id="`li_${i}`"
+                  :ref="`li_${i}`"
+                  dense
+                ><transition
+                enter-active-class="animate__animated animate__fadeInRight animate__slow"
+                leave-active-class="animate__animated animate__fadeOutTopRight animate__slow"
               >
-                <v-list-item-content
-                  class="message mb-3 pr-3 "
-                  v-breathing-colors="sample"
-                >
-                  <v-list-item-title
-                    class="titlestyle"
-                    style=" white-space:pre-wrap;"
-                    v-html="item"
+                  <v-list-item-content
+                    class="message mb-3 pr-3 "
+                    v-breathing-colors="sample"
                   >
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-               </transition-group>
+                    <v-list-item-title
+                      class="titlestyle"
+                      style=" white-space:pre-wrap;"
+                      v-html="item"
+                    >
+                    </v-list-item-title>
+                  </v-list-item-content>
+                     </transition>
+                </v-list-item>
+           
             </v-list-item-group>
           </v-list>
           <div id="listend" ref="listend">&nbsp</div>
@@ -413,12 +414,9 @@ export default {
       }, 3000);
     },
     prices(v) {
-
       if (v.length == 3) {
-
         const gif = "https://i.gifer.com/7VzX.gif";
         this.postGif(gif);
-
       }
 
       if (v.length == 5) {
@@ -428,14 +426,11 @@ export default {
         );
       }
 
-
       if (v.length == 8) {
-
-        const gif = "https://c.tenor.com/puvU5YS9r4cAAAAC/uncle-scrooge-mcduck-money.gif";
+        const gif =
+          "https://c.tenor.com/puvU5YS9r4cAAAAC/uncle-scrooge-mcduck-money.gif";
         this.postGif(gif);
-
       }
-
 
       if (v.length == 10) {
         this.say(
@@ -444,14 +439,11 @@ export default {
         );
       }
 
-
       if (v.length == 13) {
-
-        const gif = "https://c.tenor.com/QfVo3Mh29hUAAAAC/we-bare-bears-money.gif";
+        const gif =
+          "https://c.tenor.com/QfVo3Mh29hUAAAAC/we-bare-bears-money.gif";
         this.postGif(gif);
-
       }
-
 
       if (v.length == 15) {
         this.say(
@@ -461,12 +453,10 @@ export default {
       }
 
       if (v.length == 18) {
-
-        const gif = "https://c.tenor.com/0-e7d7ct3G0AAAAC/shut-up-and-take-my-money-futurama.gif";
+        const gif =
+          "https://c.tenor.com/0-e7d7ct3G0AAAAC/shut-up-and-take-my-money-futurama.gif";
         this.postGif(gif);
-
       }
-
 
       if (v.length == 20) {
         this.say(
@@ -475,58 +465,17 @@ export default {
         );
       }
 
-
       if (v.length == 22) {
-        const gif = "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Ftenor.com%2Fview%2Fbacking-you-get-yours-danny-devito-danny-devito-gif-13052176";
+        const gif =
+          "https://slack-imgs.com/?c=1&o1=ro&url=https%3A%2F%2Ftenor.com%2Fview%2Fbacking-you-get-yours-danny-devito-danny-devito-gif-13052176";
         this.postGif(gif);
       }
-
-
-
-
 
       if (v.length >= maxPrices) {
         this.submittable = true;
       }
     },
-    // zeroCounter(v) {
-    //   if (v === this.sensitivity) {
-    //     this.say("Ouch! Why it takes so long to grow!!!");
-    //     this.zeroCounter = 0;
-    //   }
-    // },
-    // grownCounter(v) {
-    //   if (v === this.sensitivity) {
-    //     const msg = `Wow! ${
-    //       numToStr[this.sensitivity]
-    //     } straight price growths in a row! To the moon!`;
-    //     this.say(msg);
-    //     this.snackbartext = `Wow! ${
-    //       numToStr[this.sensitivity]
-    //     } straight price growths in a row! To the moon!`;
-    //     this.snackbar = true;
-    //     setTimeout(() => {
-    //       this.snackbar = false;
-    //     }, 3000);
-    //     this.grownCounter = 0;
-    //   }
-    // },
-    // TwoTwosCounter(v) {
-    //   if (v === this.sensitivity2) {
-    //     const msg = `That's insane! ${
-    //       numToStr[this.sensitivity2]
-    //     } 2s in a row! You gonna be rich!`;
-    //     this.snackbartext = msg;
-    //     this.particle_type = "custom";
-    //     this.snackbar = true;
-    //     setTimeout(() => {
-    //       this.snackbar = false;
-    //       this.particle_type = "fountain";
-    //     }, 3000);
-    //     this.say(msg);
-    //     this.TwoTwosCounter = 0;
-    //   }
-    // },
+
     async submittable(val) {
       if (val) {
         await this.sendMessage({ name: "Trade_ends" });
@@ -545,18 +494,19 @@ export default {
       });
     },
   },
-  async created() {},
+  async created() {
+    this.$options.sockets.onopen = async () =>
+      await this.sendMessage({ name: "Trade_starts" });
+    this.$options.sockets.onmessage = (data) => console.log(data);
+  },
 
   async mounted() {
     this.say("Hello! Ready to invest with me? 📈 ");
-    // const gif = "https://i.gifer.com/18Pe.gif";
-    //    this.postGif(gif);
 
     this.$nextTick(() => {
       this.$refs.listend.scrollIntoView({ behavior: "smooth" });
 
       this.$refs.priceGraph.chart.setSize(null, window.innerHeight - 100);
-      // this.$refs.priceGraph.chart.reflow();
     });
 
     this.stockInterval = setInterval(async () => {
@@ -621,7 +571,20 @@ export default {
         }
       }
     },
-    async sendMessage(obj) {},
+    async sendMessage(obj) {
+       if (this.$socket.readyState == 1) {
+        const inj = {
+          // currentPrice: this.currentPrice,
+          // priceIndex: this.counter,
+          // secs_since_round_starts: differenceInSeconds(
+          //   new Date(),
+          //   this.startTime
+          // ),
+        };
+
+        await this.$socket.sendObj({ ...obj, ...inj });
+      }
+    },
     tweenUpd(v) {
       this.tweenedPrice = _.round(this.tweenedPrice, 2);
     },
