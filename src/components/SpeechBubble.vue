@@ -26,7 +26,7 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 /* CSS talk bubble */
 .talk-bubble {
   margin: 40px;

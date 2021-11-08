@@ -1,12 +1,20 @@
 <template>
   <v-app app>
+    <v-system-bar
+      v-if="training"
+      dark
+      color="red"
+      class="d-flex justify-center align-center"
+    >
+      <div>Training round!</div>
+    </v-system-bar>
     <transition
       enter-active-class="animate__animated animate__bounce animate__slow"
       leave-active-class="animate__animated animate__fadeOutTopRight animate__slow"
     >
       <v-overlay
         :value="isAwardGiven"
-        v-if="isAwardGiven"
+        v-if="isAwardGiven && gamified"
         :dark="false"
         :opacity="0"
         z-index="10000"
@@ -30,7 +38,7 @@
         </div>
       </v-overlay>
     </transition>
-    <v-overlay :value="showHappyFace">
+    <v-overlay :value="showHappyFace" v-if="gamified">
       <div class="d-flex flex-column align-center justify-center">
         <img
           src="https://i.gifer.com/Llx5.gif"
@@ -41,7 +49,7 @@
         <h1>We are so happy to see back!</h1>
       </div>
     </v-overlay>
-    <div class="funnyam d-flex flex-column">
+    <div class="funnyam d-flex flex-column" v-if="gamified">
       <transition
         name="custom-classes-transition"
         enter-active-class="animate__animated animate__bounceIn"
@@ -68,11 +76,18 @@
       />
     </transition>
     <input type="hidden" :value="currentPrice" name="exit_price" />
-    <v-app-bar app clipped-left height="100">
+    <v-app-bar app clipped-left height="100" :style="getMenuStyle">
       <v-sheet outlined class="d-flex align-center ml-1 pa-2 rounded-xl">
         <div class="d-flex align-center  font-weight-bold ">
           Current price:
-          <div class="ml-1 pa-2 blue   white--text text-no-wrap rounded-pill">
+          <div
+            class="ml-1 pa-2   text-no-wrap "
+            :class="
+              gamified
+                ? `blue  white--text rounded-pill`
+                : `border rounded-xl black--text`
+            "
+          >
             ${{ formattedTween || currentPrice }}
           </div>
         </div>
@@ -83,14 +98,21 @@
       <v-sheet outlined class="d-flex align-center ml-1 pa-2 rounded-xl">
         <div class="d-flex align-center  font-weight-bold ">
           Crash probability (for each price update):
-          <div class="ml-1 pa-2 red   white--text text-no-wrap rounded-pill">
+          <div
+            class="ml-1 pa-2   text-no-wrap rounded-pill"
+            :class="
+              gamified
+                ? `red  white--text rounded-pill`
+                : `border rounded-xl black--text`
+            "
+          >
             {{ 100 * probToZero }}%
           </div>
         </div>
       </v-sheet>
 
       <v-spacer></v-spacer>
-      <div class="d-flex">
+      <div class="d-flex" v-if="gamified">
         <div class="m-1" v-for="award in awards" :key="award.id">
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
@@ -120,9 +142,13 @@
           </v-tooltip>
         </div>
       </div>
-      <v-btn class="mx-3" large @click="dialog = true">Sell</v-btn>
+      <v-btn class="mx-3" large @click="showSellingDialog">Sell</v-btn>
     </v-app-bar>
-    <end-dialog :dialog="showEndDialog" @finishGame="finishGame"></end-dialog>
+    <end-dialog
+      :dialog="showEndDialog"
+      :currentPrice="currentPrice"
+      @finishGame="finishGame"
+    ></end-dialog>
 
     <confirm-dialog
       :dialog="dialog"
@@ -130,7 +156,14 @@
       @sell="sell"
       @continueKeeping="continueKeeping"
     ></confirm-dialog>
-    <v-navigation-drawer clipped app width="300" color="blue" permanent>
+    <v-navigation-drawer
+      clipped
+      app
+      width="300"
+      color="blue"
+      permanent
+      v-if="gamified"
+    >
       <v-card
         class="d-flex flex-column buysellcard"
         fill-height
@@ -139,18 +172,18 @@
         <v-card-text class="overflow-y-auto" style="margin-bottom:50px">
           <v-list>
             <v-list-item-group active-class="border" color="indigo" class=" ">
-              
-                <v-list-item
-                  class="m-3  "
-                  v-for="(item, i) in messages"
-                  :key="i"
-                  :id="`li_${i}`"
-                  :ref="`li_${i}`"
-                  dense
-                ><transition
+              <transition-group
                 enter-active-class="animate__animated animate__fadeInRight animate__slow"
                 leave-active-class="animate__animated animate__fadeOutTopRight animate__slow"
               >
+                <v-list-item
+                  class="m-3  "
+                  v-for="(item, i) in messages"
+                  :key="item"
+                  :id="`li_${i}`"
+                  :ref="`li_${i}`"
+                  dense
+                >
                   <v-list-item-content
                     class="message mb-3 pr-3 "
                     v-breathing-colors="sample"
@@ -162,9 +195,8 @@
                     >
                     </v-list-item-title>
                   </v-list-item-content>
-                     </transition>
                 </v-list-item>
-           
+              </transition-group>
             </v-list-item-group>
           </v-list>
           <div id="listend" ref="listend">&nbsp</div>
@@ -251,6 +283,8 @@ export default {
     const maxx = getTime(addSeconds(new Date(), tickFrequency * maxPrices));
 
     return {
+      gamified: window.gamified,
+      training: window.training,
       currentMessage: null,
       awardJustGiven: null,
       isAwardGiven: false,
@@ -292,11 +326,12 @@ export default {
       TwoTwosCounter: 0,
       sensitivity: 5,
       sensitivity2: 3,
-      probToZero: 0.03,
+      probToZero: window.crash_probability,
       startingPrice,
       currentPrice: startingPrice,
       submittable: false,
       onPause: false,
+      counter: 0,
       startTime: new Date(),
       endTime: null,
       timeSpent: null,
@@ -371,6 +406,9 @@ export default {
     };
   },
   computed: {
+    getMenuStyle() {
+      return this.training ? { top: "25px" } : null;
+    },
     awardTimes() {
       return _.keys(this.awards);
     },
@@ -485,8 +523,9 @@ export default {
       }
     },
     currentPrice: function(newValue) {
+            if (this.$refs.listend) {
       this.$refs.listend.scrollIntoView({ behavior: "smooth" });
-
+            }
       gsap.to(this.$data, {
         duration: 0.5,
         tweenedPrice: newValue,
@@ -504,8 +543,9 @@ export default {
     this.say("Hello! Ready to invest with me? 📈 ");
 
     this.$nextTick(() => {
-      this.$refs.listend.scrollIntoView({ behavior: "smooth" });
-
+      if (this.$refs.listend) {
+        this.$refs.listend.scrollIntoView({ behavior: "smooth" });
+      }
       this.$refs.priceGraph.chart.setSize(null, window.innerHeight - 100);
     });
 
@@ -514,6 +554,7 @@ export default {
         this.timeInTrade += this.tickFrequency;
         const addendum = _.random(0, 2);
         this.currentPrice += addendum;
+        this.counter++;
         const r = _.random(0, 1, true);
         if (r < this.probToZero) {
           this.submittable = true;
@@ -548,8 +589,9 @@ export default {
     classAward(award_id) {
       return this.locked(award_id) ? "gray" : "";
     },
-    finishGame() {
-      console.log("game finished");
+    async finishGame() {
+      await this.sendMessage({ name: "round_ends" });
+      document.getElementById("form").submit();
     },
 
     addMessage(price, addendum) {
@@ -572,14 +614,14 @@ export default {
       }
     },
     async sendMessage(obj) {
-       if (this.$socket.readyState == 1) {
+      if (this.$socket.readyState == 1) {
         const inj = {
-          // currentPrice: this.currentPrice,
-          // priceIndex: this.counter,
-          // secs_since_round_starts: differenceInSeconds(
-          //   new Date(),
-          //   this.startTime
-          // ),
+          currentPrice: this.currentPrice,
+          priceIndex: this.counter,
+          secs_since_round_starts: differenceInSeconds(
+            new Date(),
+            this.startTime
+          ),
         };
 
         await this.$socket.sendObj({ ...obj, ...inj });
@@ -594,6 +636,10 @@ export default {
       this.dialog = false;
       this.submittable = true;
       this.onPause = true;
+    },
+    async showSellingDialog() {
+      await this.sendMessage({ name: "sellingDialogShown" });
+      this.dialog = true;
     },
 
     async continueKeeping() {

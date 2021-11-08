@@ -9,7 +9,7 @@ import BreathingColors from "vue-breathing-colors";
 import "animate.css";
 Vue.use(BreathingColors);
 import VueParticlesBg from "particles-bg-vue";
-
+Vue.prototype.$gamified = window.gamified;
 Vue.use(VueParticlesBg);
 const ws_scheme = window.location.protocol === "https:" ? "wss" : "ws";
 const ws_path = ws_scheme + "://" + window.location.host + window.socket_path;

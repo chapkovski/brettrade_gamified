@@ -12,11 +12,11 @@
         <v-spacer></v-spacer>
         <div  >
           <v-btn-toggle>
-            <v-btn color="green darken-1" @click="continueKeeping">
+            <v-btn color=" darken-1" @click="continueKeeping" :class='$gamified?`green`:``'>
               Keep
             </v-btn>
 
-            <v-btn color="red darken-1" @click="sell"> Sell</v-btn>
+            <v-btn color=" darken-1" @click="sell" :class='$gamified?`red`:``'> Sell</v-btn>
           </v-btn-toggle>
         </div>
         
