@@ -63,7 +63,7 @@
         alt=""
         height="150px"
         width="150px"
-        style="align-self:flex-end"
+        style="align-self: flex-end"
       />
     </div>
     <transition name="fade">
@@ -77,12 +77,12 @@
     </transition>
     <input type="hidden" :value="currentPrice" name="exit_price" />
     <v-app-bar app clipped-left height="100" :style="getMenuStyle">
-       <instructions-dialog></instructions-dialog>
+      <instructions-dialog></instructions-dialog>
       <v-sheet outlined class="d-flex align-center ml-1 pa-2 rounded-xl">
-        <div class="d-flex align-center  font-weight-bold ">
+        <div class="d-flex align-center font-weight-bold">
           Current price:
           <div
-            class="ml-1 pa-2   text-no-wrap "
+            class="ml-1 pa-2 text-no-wrap"
             :class="
               gamified
                 ? `blue  white--text rounded-pill`
@@ -97,17 +97,17 @@
       <v-spacer></v-spacer>
 
       <v-sheet outlined class="d-flex align-center ml-1 pa-2 rounded-xl">
-        <div class="d-flex align-center  font-weight-bold ">
+        <div class="d-flex align-center font-weight-bold">
           Crash probability (for each price update):
           <div
-            class="ml-1 pa-2   text-no-wrap rounded-pill"
+            class="ml-1 pa-2 text-no-wrap rounded-pill"
             :class="
               gamified
                 ? `red  white--text rounded-pill`
                 : `border rounded-xl black--text`
             "
           >
-            {{ 100 * probToZero }}%
+            {{ (100 * probToZero).toFixed(0) }}%
           </div>
         </div>
       </v-sheet>
@@ -168,17 +168,17 @@
       <v-card
         class="d-flex flex-column buysellcard"
         fill-height
-        style="height:100%"
+        style="height: 100%"
       >
-        <v-card-text class="overflow-y-auto" style="margin-bottom:50px">
+        <v-card-text class="overflow-y-auto" style="margin-bottom: 50px">
           <v-list>
-            <v-list-item-group active-class="border" color="indigo" class=" ">
+            <v-list-item-group active-class="border" color="indigo" class="">
               <transition-group
                 enter-active-class="animate__animated animate__fadeInRight animate__slow"
                 leave-active-class="animate__animated animate__fadeOutTopRight animate__slow"
               >
                 <v-list-item
-                  class="m-3  "
+                  class="m-3"
                   v-for="(item, i) in messages"
                   :key="item"
                   :id="`li_${i}`"
@@ -186,12 +186,12 @@
                   dense
                 >
                   <v-list-item-content
-                    class="message mb-3 pr-3 "
+                    class="message mb-3 pr-3"
                     v-breathing-colors="sample"
                   >
                     <v-list-item-title
                       class="titlestyle"
-                      style=" white-space:pre-wrap;"
+                      style="white-space: pre-wrap"
                       v-html="item"
                     >
                     </v-list-item-title>
@@ -276,11 +276,11 @@ export default {
     highcharts: Chart,
     ConfirmDialog,
     EndDialog,
-InstructionsDialog,
+    InstructionsDialog,
     ParticlesBg,
     SpeechBubble,
   },
-  data: function() {
+  data: function () {
     const minx = Date.UTC(2009, 0, 1);
     const maxx = getTime(addSeconds(new Date(), tickFrequency * maxPrices));
 
@@ -347,8 +347,7 @@ InstructionsDialog,
       awards: {
         10: {
           id: 0,
-          img:
-            "https://cdn0.iconfinder.com/data/icons/business-finance-vol-2-56/512/stock_trader_trade_exchange-256.png",
+          img: "https://cdn0.iconfinder.com/data/icons/business-finance-vol-2-56/512/stock_trader_trade_exchange-256.png",
           name: "Level I",
           brief: "Level I Badge: Trading intern",
           desc: [
@@ -359,8 +358,7 @@ InstructionsDialog,
         },
         25: {
           id: 1,
-          img:
-            "https://cdn2.iconfinder.com/data/icons/financial-strategy-20/496/trader-bitcoin-cryptocurrency-investment-businessman-1024.png",
+          img: "https://cdn2.iconfinder.com/data/icons/financial-strategy-20/496/trader-bitcoin-cryptocurrency-investment-businessman-1024.png",
           name: "Level II",
           brief: "Level II Badge: Trading manager",
           desc: [
@@ -372,8 +370,7 @@ InstructionsDialog,
         },
         50: {
           id: 2,
-          img:
-            "https://cdn1.iconfinder.com/data/icons/office-and-internet-3/49/217-512.png",
+          img: "https://cdn1.iconfinder.com/data/icons/office-and-internet-3/49/217-512.png",
           name: "Level III",
           brief: "Level III Badge: Money Boss",
           desc: [
@@ -400,9 +397,7 @@ InstructionsDialog,
           selected: 0,
         },
         series: [
-          { name:'Stock price',
-            data: [[getTime(new Date()), startingPrice]],
-          },
+          { name: "Stock price", data: [[getTime(new Date()), startingPrice]] },
         ],
       },
     };
@@ -429,7 +424,7 @@ InstructionsDialog,
   watch: {
     timeInTrade(t) {
       const that = this;
-      _.forEach(this.awardTimes, function(i) {
+      _.forEach(this.awardTimes, function (i) {
         if (t > i && !that.awardsGiven.includes(that.awards[i].id)) {
           that.isAwardGiven = true;
           const awardToGive = that.awards[i];
@@ -460,8 +455,9 @@ InstructionsDialog,
 
       if (v.length == 5) {
         this.say(
-          `Diamond hands 💎🤲: \nHolding strong for ${v.length *
-            this.tickFrequency} seconds already!`
+          `Diamond hands 💎🤲: \nHolding strong for ${
+            v.length * this.tickFrequency
+          } seconds already!`
         );
       }
 
@@ -473,8 +469,9 @@ InstructionsDialog,
 
       if (v.length == 10) {
         this.say(
-          `To the moon 🚀: \nStock is going up for ${v.length *
-            this.tickFrequency} seconds.`
+          `To the moon 🚀: \nStock is going up for ${
+            v.length * this.tickFrequency
+          } seconds.`
         );
       }
 
@@ -486,8 +483,9 @@ InstructionsDialog,
 
       if (v.length == 15) {
         this.say(
-          `Gimme the tendies! 🍗: \nCash piling up for ${v.length *
-            this.tickFrequency} seconds now.`
+          `Gimme the tendies! 🍗: \nCash piling up for ${
+            v.length * this.tickFrequency
+          } seconds now.`
         );
       }
 
@@ -499,8 +497,9 @@ InstructionsDialog,
 
       if (v.length == 20) {
         this.say(
-          `Almost there 🚀🚀🚀🚀: \nImpressive run for ${v.length *
-            this.tickFrequency} seconds.`
+          `Almost there 🚀🚀🚀🚀: \nImpressive run for ${
+            v.length * this.tickFrequency
+          } seconds.`
         );
       }
 
@@ -523,10 +522,10 @@ InstructionsDialog,
         // document.getElementById("form").submit();
       }
     },
-    currentPrice: function(newValue) {
-            if (this.$refs.listend) {
-      this.$refs.listend.scrollIntoView({ behavior: "smooth" });
-            }
+    currentPrice: function (newValue) {
+      if (this.$refs.listend) {
+        this.$refs.listend.scrollIntoView({ behavior: "smooth" });
+      }
       gsap.to(this.$data, {
         duration: 0.5,
         tweenedPrice: newValue,
@@ -572,7 +571,7 @@ InstructionsDialog,
     }, this.tickFrequency * 1000);
   },
   methods: {
-    showInstructions(){},
+    showInstructions() {},
     postGif(url) {
       const img = `<img src="${url}" width="180px"/>`;
       this.messages.push(img);
