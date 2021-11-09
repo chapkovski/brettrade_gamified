@@ -345,7 +345,7 @@ export default {
       tickFrequency,
       awardsGiven: [],
       awards: {
-        4*tickFrequency: {
+        4: {
           id: 0,
           img: "https://cdn0.iconfinder.com/data/icons/business-finance-vol-2-56/512/stock_trader_trade_exchange-256.png",
           name: "Level I",
@@ -356,7 +356,7 @@ export default {
             "You are definitely going places! 🙌",
           ],
         },
-        9*tickFrequency {
+        9: {
           id: 1,
           img: "https://cdn2.iconfinder.com/data/icons/financial-strategy-20/496/trader-bitcoin-cryptocurrency-investment-businessman-1024.png",
           name: "Level II",
@@ -368,7 +368,7 @@ export default {
             "Have you ever thought of opening your own trading firm?",
           ],
         },
-        19*tickFrequency: {
+        19: {
           id: 2,
           img: "https://cdn1.iconfinder.com/data/icons/office-and-internet-3/49/217-512.png",
           name: "Level III",
@@ -422,7 +422,7 @@ export default {
     },
   },
   watch: {
-    timeInTrade(t) {
+    counter(t) {
       const that = this;
       _.forEach(this.awardTimes, function (i) {
         if (t > i && !that.awardsGiven.includes(that.awards[i].id)) {
